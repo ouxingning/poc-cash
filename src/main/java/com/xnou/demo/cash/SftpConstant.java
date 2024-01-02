@@ -11,6 +11,6 @@ public class SftpConstant {
 	public static final int PORT = 10001;
 	public static final String USER = "cash-reporting";
 	public static final String PASS = "39,hmR5Z-+Y5NBb&";
-	public static final String PRIVATE_KEY = "spotify_priv_2017_openssh.ppk";
+	public static final String PRIVATE_KEY = "/home/opc/spotify/spotify_priv_2017_openssh.ppk";
 
 }
