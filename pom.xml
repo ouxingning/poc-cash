@@ -71,6 +71,16 @@
 		</dependency>
 		
 		
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-common-httpclient-jersey</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.oci.sdk</groupId>
+			<artifactId>oci-java-sdk-addons-apache-configurator-jersey</artifactId>
+		</dependency>
+		
+		
 
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
