@@ -22,7 +22,7 @@ public class FtpFileService {
 	private static final String DEFAULT_PASSWORD = "wybwot-sybte3-Tymfet";
 	private static final String DEFAULT_URL = "jdbc:oracle:thin:@cashatp_high?TNS_ADMIN=/home/opc/Wallet_CASHATP/";
 	
-	private static final String TABLE_NAME = "ftp_file";
+	private static final String TABLE_NAME = "WKSP_CASH.ftp_file";
 
 	private static OracleDataSource dataSource;
 
