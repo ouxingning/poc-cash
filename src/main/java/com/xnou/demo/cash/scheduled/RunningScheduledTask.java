@@ -58,7 +58,8 @@ public class RunningScheduledTask {
 
 		// download file from FTP
 		File remoteFile = new File(file.getDirectory(), file.getFilename());
-		File localFile = new File(System.getProperty("java.io.tmpdir"), file.getFilename());
+		//File localFile = new File(System.getProperty("java.io.tmpdir"), file.getFilename());
+		File localFile = new File("/home/opc/workspace/files/", file.getFilename());
 		long start = System.currentTimeMillis();
 		SshjUtils.downloadFile(remoteFile.getAbsolutePath(), localFile.getAbsolutePath());
 		long end = System.currentTimeMillis();
