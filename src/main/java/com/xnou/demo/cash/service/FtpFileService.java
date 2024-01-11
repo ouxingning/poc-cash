@@ -45,15 +45,32 @@ public class FtpFileService {
 		return (OracleConnection) dataSource.getConnection();
 	}
 
+//	MERGE INTO 目标表 t
+//	USING (SELECT 值 FROM 原表) s
+//	ON (t.主键 = s.主键)
+//	WHEN NOT MATCHED THEN
+//	  INSERT (主键或唯一值的列，列名1, 列名2, )
+//	  VALUES (值, 值, 值);
 	public int[] batchInsert(List<FtpFile> fileList) throws SQLException {
+		
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" merge into ").append(TABLE_NAME).append(" t ");
+		sb.append(" using (select filename, mtime from " + TABLE_NAME + ") s ");
+		sb.append(" on (t.mtime = s.mtime and t.filename = s.filename) ");
+		sb.append(" when not matched then ");
+		sb.append(" insert (directory, filename, filesize, atime, mtime, processed, ptime, ptimefinished) ");
+		sb.append(" values(?, ?, ?, ?, ?, ?, ?, ?) ");
+		
+		
 
 		Connection conn = null;
 		try {
 			conn = getConnection();
 
-			String sql = "insert into " + TABLE_NAME
-					+ " (directory, filename, filesize, atime, mtime, processed, ptime, ptimefinished) values (?, ?, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement ps = conn.prepareStatement(sql);
+//			String sql = "insert into " + TABLE_NAME
+//					+ " (directory, filename, filesize, atime, mtime, processed, ptime, ptimefinished) values (?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = conn.prepareStatement(sb.toString());
 
 			conn.setAutoCommit(false);
 
