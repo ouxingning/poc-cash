@@ -21,7 +21,7 @@ import com.xnou.demo.cash.service.ObjectStorageService;
 @Component
 public class RunningScheduledTask {
 
-	@Scheduled(fixedRate = 1000L * 60 * 10)
+	@Scheduled(fixedRate = 1000L * 60 * 2)
 	public void run() {
 
 		FtpFileService fileService = new FtpFileService();
@@ -81,7 +81,7 @@ public class RunningScheduledTask {
 		System.out.println(String.format("File %s finish processing, rows={}", file.getFilename(), rows));
 		
 		// delete the local file
-//		localFile.delete();
+		localFile.delete();
 	}
 
 }
