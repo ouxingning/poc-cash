@@ -45,9 +45,12 @@ public class RunningScheduledTask {
 	}
 
 	private void process(FtpFileService fileService, FtpFile file) throws SQLException, IOException {
+		long ptime = System.currentTimeMillis();
+				
 		FtpFile currentFile = new FtpFile();
 		currentFile.setProcessed(2); // processing
-		currentFile.setPtime(System.currentTimeMillis());
+		currentFile.setPtime(ptime);
+		currentFile.setPtimefinished(0L);
 		currentFile.setMtime(file.getMtime());
 		currentFile.setFilename(file.getFilename());
 		
@@ -73,6 +76,7 @@ public class RunningScheduledTask {
 		// update processed status in database
 		currentFile = new FtpFile();
 		currentFile.setProcessed(3); // finished
+		currentFile.setPtime(ptime);
 		currentFile.setPtimefinished(System.currentTimeMillis());
 		currentFile.setMtime(file.getMtime());
 		currentFile.setFilename(file.getFilename());
