@@ -140,6 +140,37 @@ public class FtpFileService {
 			}
 		}
 	}
+	
+	public int updateProcessed(long mtime, String filename, int processed) throws SQLException {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+
+			String sql = "update " + TABLE_NAME + " set processed=? where mtime=? and filename=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			conn.setAutoCommit(false);
+
+			ps.setInt(1, processed);
+			ps.setLong(2, mtime);
+			ps.setString(3, filename);
+
+			int rows = ps.executeUpdate();
+
+			System.out.println("updated rows: " + rows);
+
+			conn.commit();
+
+			ps.close();
+
+			return rows;
+
+		} finally {
+			if (null != conn) {
+				conn.close();
+			}
+		}
+	}
 
 	public List<FtpFile> select(int processed) throws SQLException {
 		List<FtpFile> result = new ArrayList<>();

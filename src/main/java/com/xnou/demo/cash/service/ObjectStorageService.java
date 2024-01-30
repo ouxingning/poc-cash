@@ -65,6 +65,47 @@ public class ObjectStorageService {
 		return response.getOpcRequestId();
 	}
 
+	// Copy object from certain bucket to another bucket.
+	public void copyObject(String sourceObjectName, String destinationBucketName, String destinationObjectName)
+			throws Exception {
+
+		// Create an authentication provider.
+		final ConfigFileReader.ConfigFile configFile = ConfigFileReader.parseDefault(CONFIG_PROFILE);
+		final AuthenticationDetailsProvider provider = new ConfigFileAuthenticationDetailsProvider(configFile);
+
+		ObjectStorage client = ObjectStorageClient.builder().region(REGION).build(provider);
+
+		CopyObjectDetails copyObjectDetails = CopyObjectDetails.builder().sourceObjectName(sourceObjectName)
+				.destinationRegion(REGION.getRegionId()).destinationNamespace(NAMESPACE_NAME)
+				.destinationBucket(destinationBucketName).destinationObjectName(destinationObjectName).build();
+		CopyObjectRequest copyObjectRequest = CopyObjectRequest.builder().namespaceName(NAMESPACE_NAME)
+				.bucketName(BUCKET_NAME).copyObjectDetails(copyObjectDetails).build();
+
+		CopyObjectResponse copyObjectResponse = client.copyObject(copyObjectRequest);
+		System.out.println("Wait for copy to finish.");
+
+		GetWorkRequestRequest getWorkRequestRequest = GetWorkRequestRequest.builder()
+				.workRequestId(copyObjectResponse.getOpcWorkRequestId()).build();
+
+		GetWorkRequestResponse getWorkRequestResponse = client.getWaiters().forWorkRequest(getWorkRequestRequest)
+				.execute();
+
+		WorkRequest.Status status = getWorkRequestResponse.getWorkRequest().getStatus();
+		System.out.println("Work request is now in " + status + " state.");
+
+		if (status == WorkRequest.Status.Completed) {
+			System.out.println("Verify that the object has been copied.");
+
+			// 删除源文件
+//			if (deleteSourceObject) {
+//				this.deleteObject(provider, namespace, bucketName, sourceObjectName);
+//			}
+		}
+
+		client.close();
+	}
+	
+
 	public void uploadObject(final AuthenticationDetailsProvider provider) {
 
 		String namespaceName = null;
